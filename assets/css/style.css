@@ -1,0 +1,89 @@
+/* Override Bootstrap Variables */
+:root {
+    --bs-primary: #2575fc;
+    --bs-secondary: #2575fc;
+    --bs-dark: #121212;
+    --bs-light: #f0f0f0;
+}
+
+/* Dark Theme Enhancements */
+body {
+    background-color: var(--bs-dark);
+    color: var(--bs-light);
+}
+
+/* Navigation Customizations */
+.navbar {
+    background: linear-gradient(to right, var(--bs-primary), var(--bs-secondary)) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: white !important;
+}
+
+/* Hero Section Updates */
+.hero {
+    background: linear-gradient(to right, var(--bs-primary), var(--bs-secondary));
+    padding: 50px 0;
+    text-align: center;
+}
+
+.profile-pic {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border: 4px solid white;
+    object-fit: cover;
+}
+
+/* Project Cards */
+.project-card {
+    background-color: #1e1e1e;
+    color: white;
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+    transform: scale(1.05);
+}
+
+.project-card .btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-secondary);
+}
+
+/* Skills */
+.skills-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.skill {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    background-color: var(--bs-primary);
+    color: white;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .profile-pic {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+/* Light Mode Toggle */
+body.light-mode {
+    background-color: white;
+    color: black;
+}
+
+body.light-mode .hero,
+body.light-mode .section {
+    background-color: #f4f4f4;
+    color: black;
+}
