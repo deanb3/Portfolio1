@@ -8,8 +8,11 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets\css\style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -22,30 +25,35 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
+                        <a class="nav-link" href="#home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
+                        <a class="nav-link" href="#about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="projects.html">Projects</a>
+                        <a class="nav-link" href="#projects">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
+    <!-- Hero Section -->
     <div class="hero" id="home">
         <div class="container">
             <div class="profile-container">
                 <img src="./assets/images/profile-pic.jpg" class="profile-pic" alt="Profile Picture">
             </div>
 
-            <h1 id="dean" class="name">Dean</h1>
+            <h1 id="dean" class="name">Dean Brune</h1>
             <p class="tagline">Junior Software Developer | Tech Enthusiast | Student</p>
         </div>
     </div>
 
+    <!-- About Section -->
     <section class="section about" id="about">
         <div class="container">
             <h2>About Me</h2>
@@ -53,6 +61,7 @@
         </div>
     </section>
 
+    <!-- Skills Section -->
     <section class="section skills text-center" id="skills">
         <div class="container">
             <h2>Skills</h2>
@@ -61,10 +70,12 @@
                 <span class="skill">CSS</span>
                 <span class="skill">JavaScript</span>
                 <span class="skill">Git</span>
+                <span class="skill">Bootstrap</span>
             </div>
         </div>
     </section>
 
+    <!-- Projects Section -->
     <section class="section projects" id="projects">
         <div class="container">
             <h2>Projects</h2>
@@ -90,9 +101,62 @@
             </div>
         </div>
     </section>
-    <!-- Contact Section -->
-    <div class="row mt-4">
-        <div class="col-12">
+
+    <!-- Contact Section with Bootstrap Form -->
+    <section class="section contact" id="contact">
+        <div class="container">
+            <h2 class="text-center mb-4">Contact Me</h2>
+            
+            <!-- Bootstrap Form with Postman Echo POST Method -->
+            <form action="https://postman-echo.com/post" method="POST" id="contactForm">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Subject</label>
+                    <input type="text" class="form-control" id="subject" name="subject" placeholder="Enter message subject" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="5" placeholder="Write your message here" required></textarea>
+                </div>
+                
+                <!-- Optional Contact Preference -->
+                <div class="mb-3">
+                    <label class="form-label">Preferred Contact Method</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="contactMethod" id="emailContact" value="email" checked>
+                        <label class="form-check-label" for="emailContact">
+                            Email
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="contactMethod" id="phoneContact" value="phone">
+                        <label class="form-check-label" for="phoneContact">
+                            Phone
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Social Media and Contact Links -->
+    <section class="section social-links">
+        <div class="container">
             <div class="card">
                 <div class="card-body text-center">
                     <h3 class="card-title">Let's Connect</h3>
@@ -110,10 +174,10 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 
-    <footer>
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
         <div class="container">
             © <span class="year">2024</span> Dean Brune. All Rights Reserved.
         </div>
@@ -125,7 +189,34 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Custom JavaScript -->
-   
+    <!-- Custom JavaScript for Form Handling -->
+    <script>
+        // Optional: Add client-side form validation and submission handling
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            // Prevent default form submission
+            event.preventDefault();
+            
+            // You could add additional client-side validation here
+            console.log('Form submitted');
+            
+            // Collect form data
+            const formData = new FormData(event.target);
+            
+            // Send form data to Postman Echo
+            fetch('https://postman-echo.com/post', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Form submission response:', data);
+                alert('Message sent successfully!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        });
+    </script>
 </body>
 </html>
