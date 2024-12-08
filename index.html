@@ -28,13 +28,13 @@
                         <a class="nav-link" href="#home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#about">About</a>
+                        <a class="nav-link" href="about.html">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#projects">Projects</a>
+                        <a class="nav-link" href="projects.html">Projects</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
+                        <a class="nav-link" href="contact.html">Contact</a>
                     </li>
                 </ul>
             </div>
@@ -101,59 +101,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Contact Section with Bootstrap Form -->
-    <section class="section contact" id="contact">
-        <div class="container">
-            <h2 class="text-center mb-4">Contact Me</h2>
-            
-            <!-- Bootstrap Form with Postman Echo POST Method -->
-            <form action="https://postman-echo.com/post" method="POST" id="contactForm">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="fullName" class="form-label">Full Name</label>
-                        <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="email" class="form-label">Email Address</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
-                    </div>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="subject" class="form-label">Subject</label>
-                    <input type="text" class="form-control" id="subject" name="subject" placeholder="Enter message subject" required>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" id="message" name="message" rows="5" placeholder="Write your message here" required></textarea>
-                </div>
-                
-                <!-- Optional Contact Preference -->
-                <div class="mb-3">
-                    <label class="form-label">Preferred Contact Method</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="contactMethod" id="emailContact" value="email" checked>
-                        <label class="form-check-label" for="emailContact">
-                            Email
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="contactMethod" id="phoneContact" value="phone">
-                        <label class="form-check-label" for="phoneContact">
-                            Phone
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </div>
-            </form>
-        </div>
-    </section>
-
     <!-- Social Media and Contact Links -->
     <section class="section social-links">
         <div class="container">
@@ -167,7 +114,7 @@
                         <a href="https://github.com/deanb3" target="_blank" class="btn btn-dark">
                             <i class="bi bi-github"></i> GitHub
                         </a>
-                        <a href="https://linkedin.com/in/deanbrune" target="_blank" class="btn btn-info">
+                        <a href="https://linkedin.com/in/deanbrune" target="_blank" class="btn btn-primary">
                             <i class="bi bi-linkedin"></i> LinkedIn
                         </a>
                     </div>
@@ -189,34 +136,5 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Custom JavaScript for Form Handling -->
-    <script>
-        // Optional: Add client-side form validation and submission handling
-        document.getElementById('contactForm').addEventListener('submit', function(event) {
-            // Prevent default form submission
-            event.preventDefault();
-            
-            // You could add additional client-side validation here
-            console.log('Form submitted');
-            
-            // Collect form data
-            const formData = new FormData(event.target);
-            
-            // Send form data to Postman Echo
-            fetch('https://postman-echo.com/post', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Form submission response:', data);
-                alert('Message sent successfully!');
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
-            });
-        });
-    </script>
 </body>
 </html>
