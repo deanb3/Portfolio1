@@ -51,8 +51,7 @@
                         <h2 class="card-title mb-4">Contact Information</h2>
                         <div class="contact-info">
                             <p><strong>Email:</strong> deaneric3@gmail.com</p>
-                            <p><strong>Location:</strong> Remote/Global</p>
-                            <p><strong>Availability:</strong> Weekdays 9 AM - 5 PM EST</p>
+                            <p><strong>Location:</strong> Phoenix, Arizona (Remote/Global)</p>
                         </div>
 
                         <h3 class="mt-4 mb-3">Connect Online</h3>
@@ -122,12 +121,6 @@
                                 <label for="message" class="form-label">Your Message</label>
                                 <textarea class="form-control" id="message" name="message" rows="5" placeholder="Write your message here" required></textarea>
                                 <div class="invalid-feedback">Please enter a message.</div>
-                            </div>
-                            
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="privacyConsent" name="privacyConsent" required>
-                                <label class="form-check-label" for="privacyConsent">I agree to the privacy policy and consent to being contacted</label>
-                                <div class="invalid-feedback">You must agree to the privacy policy.</div>
                             </div>
                             
                             <div class="text-center">
