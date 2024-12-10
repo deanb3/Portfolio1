@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack Game</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+
+    
+    <!-- React and Babel for browser compilation -->
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="Card & Deck functions.ts"></script>
+    <script src="blackjack.js"></script>
+
+    <style>
+        body {
+            background-color: #2d3436;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+
+        .balance-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00cec9;
+        }
+
+        .card-deck-source {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 100px;
+            height: 150px;
+            border: 2px dashed #6c757d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .game-area {
+            background-color: #2d3436;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-button {
+            width: 150px;
+        }
+
+        .card {
+            width: 80px;
+            height: 120px;
+            margin: 5px;
+            background: linear-gradient(to bottom, #ffffff, #f7f7f7);
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .card.red {
+            color: #e74c3c;
+        }
+
+        .card.black {
+            color: #2d3436;
+        }
+
+        .message-box {
+            font-size: 1.25rem;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const BlackjackGame = () => {
+            // Suits and values
+            const suits = ['♠', '♣', '♥', '♦'];
+            const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
+            // State management
+            const [deck, setDeck] = React.useState([]);
+            const [playerHand, setPlayerHand] = React.useState([]);
+            const [dealerHand, setDealerHand] = React.useState([]);
+            const [gameStatus, setGameStatus] = React.useState('start');
+            const [message, setMessage] = React.useState('');
+            const [balance, setBalance] = React.useState(1000); // Starting balance
+            const [bet, setBet] = React.useState(0); // Current bet
+            const [betError, setBetError] = React.useState('');
+
+            const createDeck = () => {
+                return suits.flatMap(suit => 
+                    values.map(value => ({ suit, value, id: Math.random().toString(36).substr(2, 9) }))
+                );
+            };
+
+            const calculateHandValue = (hand) => {
+                let value = 0;
+                let aces = 0;
+
+                hand.forEach(card => {
+                    if (['J', 'Q', 'K'].includes(card.value)) {
+                        value += 10;
+                    } else if (card.value === 'A') {
+                        aces += 1;
+                        value += 11;
+                    } else {
+                        value += parseInt(card.value);
+                    }
+                });
+
+                while (value > 21 && aces > 0) {
+                    value -= 10;
+                    aces -= 1;
+                }
+
+                return value;
+            };
+
+            const startGame = () => {
+                const newDeck = createDeck();
+                for (let i = newDeck.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [newDeck[i], newDeck[j]] = [newDeck[j], newDeck[i]];
+                }
+
+                const initialPlayerHand = [newDeck.pop(), newDeck.pop()];
+                const initialDealerHand = [newDeck.pop(), newDeck.pop()];
+
+                setDeck(newDeck);
+                setPlayerHand(initialPlayerHand);
+                setDealerHand(initialDealerHand);
+                setGameStatus('playing');
+                setMessage('');
+            };
+
+            const hit = () => {
+                if (gameStatus !== 'playing') return;
+
+                const newDeck = [...deck];
+                const dealtCard = newDeck.pop();
+                const newPlayerHand = [...playerHand, dealtCard];
+
+                setPlayerHand(newPlayerHand);
+                setDeck(newDeck);
+
+                const playerValue = calculateHandValue(newPlayerHand);
+                if (playerValue > 21) {
+                    setGameStatus('dealer-win');
+                    setMessage('Bust! Dealer wins.');
+                }
+            };
+
+            const stand = () => {
+                if (gameStatus !== 'playing') return;
+
+                let newDealerHand = [...dealerHand];
+                while (calculateHandValue(newDealerHand) < 17) {
+                    newDealerHand.push(deck.pop());
+                }
+
+                setDealerHand(newDealerHand);
+
+                const playerValue = calculateHandValue(playerHand);
+                const dealerValue = calculateHandValue(newDealerHand);
+
+                if (dealerValue > 21 || playerValue > dealerValue) {
+                    setBalance(balance + bet * 2);
+                    setGameStatus('player-win');
+                    setMessage('You win!');
+                } else if (playerValue === dealerValue) {
+                    setBalance(balance + bet);
+                    setGameStatus('draw');
+                    setMessage('It\'s a draw!');
+                } else {
+                    setGameStatus('dealer-win');
+                    setMessage('Dealer wins!');
+                }
+            };
+
+            const renderCard = (card) => {
+                const isRed = card.suit === '♥' || card.suit === '♦';
+                return (
+                    <div className={`card ${isRed ? 'red' : 'black'}`} key={card.id}>
+                        <div>{card.value}</div>
+                        <div>{card.suit}</div>
+                    </div>
+                );
+            };
+
+            return (
+                <div className="game-area container text-center">
+                    <h1>Blackjack</h1>
+                    <div className="balance-display">
+                        Balance: ${balance}
+                    </div>
+                    {gameStatus === 'start' && (
+                        <div className="mb-4">
+                            <input 
+                                type="number" 
+                                className="form-control w-25 d-inline-block" 
+                                placeholder="Enter Bet" 
+                                value={bet} 
+                                onChange={(e) => setBet(Number(e.target.value))} 
+                            />
+                            <button 
+                                className="btn btn-success ms-2" 
+                                onClick={() => {
+                                    if (bet <= 0 || bet > balance) {
+                                        setBetError('Invalid bet amount.');
+                                    } else {
+                                        setBetError('');
+                                        setBalance(balance - bet);
+                                        startGame();
+                                    }
+                                }}
+                            >
+                                Place Bet
+                            </button>
+                            {betError && <p className="text-danger">{betError}</p>}
+                        </div>
+                    )}
+                    <div className="mb-4">
+                        <h3>Dealer's Hand</h3>
+                        <div className="card-container">
+                            {dealerHand.map(renderCard)}
+                        </div>
+                    </div>
+                    <div className="mb-4">
+                        <h3>Your Hand</h3>
+                        <div className="card-container">
+                            {playerHand.map(renderCard)}
+                        </div>
+                    </div>
+                    {message && <div className="message-box">{message}</div>}
+                    {gameStatus === 'playing' ? (
+                        <>
+                            <button className="btn btn-secondary game-button" onClick={hit}>Hit</button>
+                            <button className="btn btn-primary game-button ms-2" onClick={stand}>Stand</button>
+                        </>
+                    ) : (
+                        <button className="btn btn-outline-secondary game-button" onClick={startGame}>New Game</button>
+                    )}
+                </div>
+            );
+        };
+
+        ReactDOM.render(<BlackjackGame />, document.getElementById('root'));
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle
